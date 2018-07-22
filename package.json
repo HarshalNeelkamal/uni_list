@@ -1,0 +1,14 @@
+{
+  "name": "uni_list",
+  "version": "1.0.0",
+  "description": "university market place",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "harshal neelkamal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
