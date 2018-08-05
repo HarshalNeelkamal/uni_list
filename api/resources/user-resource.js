@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var manager = require('../managers/user-manager');
 
-router.get("/",(req, res, next) => {
-  res.send({
-    message: "in user resource"
+router.get("/:user_id",(req, res, next) => {
+  manager.handleGet(req.params.user_id, result => {
+    res.send(result[0]);
   });
 });
 
