@@ -7,16 +7,9 @@ var user = require('../resources/user-resource');
 
 
 //request routing
-router.use("*", (req, res, next) => {
-  if(auth.intercept(req) === true){
-    next();
-  }else{
-    res.status(500);
-    res.json({
-      message: "un-authorised attempt"
-    });
-  }
-});
+// router.use("*", auth.getJSONWebKeySet(), (req, res, next) => {
+//   next();
+// });
 
 router.use("/user", user);
 
