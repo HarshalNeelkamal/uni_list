@@ -15,6 +15,8 @@ router.get("/:user_id",(req, res, next) => {
 });
 
 router.post("/",(req, res, next) => {
+  console.log(req.get('content-type'));
+  console.log(req.body);
   manager.handlePost(req.body, (error, result) => {
     if(error){
       res.status(500).json({
@@ -27,11 +29,28 @@ router.post("/",(req, res, next) => {
 });
 
 router.patch("/",(req, res, next) => {
-
+  manager.handleGet(req.body.id, (error, result) => {
+    if(error){
+      res.status(500).json({
+        message: error
+      })
+    } else {
+      manager.handlePatch(req.body, (error, result) => {
+        if(error){
+          res.status(500).json({
+            message: error
+          })
+        } else {
+          res.send(result);
+        }
+      });
+    }
+  });
+  
 });
 
 router.delete("/:user_id",(req, res, next) => {
-  manager.handlePost(req.params.user_id, (error, result) => {
+  manager.handleDelete(req.params.user_id, (error, result) => {
     if(error){
       res.status(500).json({
         message: error
