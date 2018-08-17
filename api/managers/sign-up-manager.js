@@ -11,5 +11,8 @@ module.exports = {
       }
     });
   },
-  
+
+  createToken = function(user) {
+
+  }  
 };
