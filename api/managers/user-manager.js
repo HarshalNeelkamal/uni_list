@@ -5,30 +5,19 @@ const SELECT_FROM_USER_PROFILE = "SELECT * from users WHERE id = ?";
 const CREATE_USER_PROFILE = "INSERT INTO users (user_name, email) VALUES (?,?)";
 const DELETE_USER_PROFILE = "DELETE from users WHERE id = ?";
 const PATCH_USER_PROFILE = "UPDATE users SET ";
-const CHECK_EMAIL = "SELECT EXISTS(SELECT * FROM users WHERE email = ?)";
+const CHECK_EMAIL = "SELECT * FROM users WHERE email = ?";
 
 module.exports = {
 
 handlePost : function(json_body, callback) {
   connection.query(CHECK_EMAIL, json_body.email, (error, result) => {
     if(result && result.length > 0){
-      callback({message : "Email already registered, try logging in"});
+      callback("Email already registered, try logging in");
     }else{
-      connection.query(CREATE_USER_PROFILE, [json_body.user_name, json_body.email], (error, result) => {
-        if(error){
-          callback(error);
-        }else {
-          this.handleGet(result.insertId, (error, result) => {
-            if(error){
-              callback({message: "Something went wrong", user_id: result.insertId});
-            }else {
-              if(result.length > 0){
-                this.verifyUser(result[0]);
-              }
-              callback(null, result);
-            }
-          });
-        }
+      this.verifyInfo(json_body, () => {
+        this.createUser(json_body, callback);
+      }, () => {
+        callback("Invalid Info, please try again with another email id");
       });
     }
   })
@@ -89,12 +78,28 @@ handlePatch : function(json_body, callback) {
 },
 
 
-verifyInfo = (user) => {
-  verification.verify_email(user.email, (success) => {
-    if(success){
-      //send out email using a util
+verifyInfo : function(user, success_block, failure_block) {
+  verification.verify_email(user.email, (verified) => {
+    if(verified){
+      success_block();
+    }else{
+      failure_block();
+    }
+  });
+},
+
+createUser : function(json_body, callback) {
+  connection.query(CREATE_USER_PROFILE, [json_body.user_name, json_body.email], (error, result) => {
+    if(error){
+      callback(error);
     }else {
-      this.handleDelete(user.id, () => {});
+      this.handleGet(result.insertId, (error, result) => {
+        if(error){
+          callback({message: "Something went wrong", user_id: result.insertId});
+        }else {
+          callback(null, result);
+        }
+      });
     }
   });
 }
