@@ -1,5 +1,6 @@
 const connection = require('../util/connection');
 const verification = require('../util/verifications');
+const token_manager = require('./token-manager');
 
 const SELECT_FROM_USER_PROFILE = "SELECT * from users WHERE id = ?";
 const CREATE_USER_PROFILE = "INSERT INTO users (user_name, email) VALUES (?,?)";
@@ -98,6 +99,7 @@ createUser : function(json_body, callback) {
           callback({message: "Something went wrong", user_id: result.insertId});
         }else {
           callback(null, result);
+          token_manager.createToken(result[0]);
         }
       });
     }
