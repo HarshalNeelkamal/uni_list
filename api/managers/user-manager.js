@@ -41,9 +41,13 @@ handleDelete : function(user_id, callback) {
     if(error){
       callback(error);
     }else {
-      callback(null, {
-        message: "user with id: "+user_id+" successfully deleted"
-      });
+      token_manager.deleteToken(user_id, result => {
+        callback(null, {
+          message: "user with id: "+user_id+" successfully deleted"
+        });
+      }, err => {
+        callback(err);
+      })
     }
   });
 },
