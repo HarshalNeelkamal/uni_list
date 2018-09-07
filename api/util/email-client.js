@@ -16,23 +16,22 @@ module.exports = {
         Body: {
          Html: {
           Charset: "UTF-8", 
-          Data: '<div><div>Hello <b>'+user_name+'!</b><div><a href="localhost:3000/uni/user_signup?token='+token+'&user_name='+user_name+'" >Click here To Verify it\'s you</a></div>'
+          Data: '<div><div>Hello <b>'+user_name+'!</b></div><div><a href="localhost:3000/uni/user_signup?token='+token+'&user_name='+user_name+'" >Verify</a></div><div><a href="localhost:3000/uni/unsubscribe?token='+token+'&user_name='+user_name+'">un subscribe</a></div></div>'
          }, 
          Text: {
           Charset: "UTF-8", 
-          Data: "This is a verification email."
+          Data: " Hello Kind Sir/Ma'am, Please Follow the Instruction to complete Verification Proccess."
          }
         }, 
         Subject: {
          Charset: "UTF-8", 
-         Data: "Uni-List Verification Email"
+         Data: "Verification from University List"
         }
        },
        Source: process.env.VERIFICATION_SOURCE, 
        SourceArn: process.env.EMAIL_POLICY_ARN
     };
 
-    console.log(params);
     ses.sendEmail(params, (error, data)=> {
       if(error){
         console.log(">> Email verification failed with error: \n"+error);

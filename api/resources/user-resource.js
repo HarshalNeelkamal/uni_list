@@ -60,7 +60,7 @@ router.delete("/:user_id",(req, res, next) => {
 });
 
 router.get("/resend/:user_id",(req, res, next) => {
-
+  
 });
 
 module.exports = router;
