@@ -4,8 +4,6 @@ const token_manager = require('./token-manager');
 
 const SELECT_FROM_USER_PROFILE = "SELECT * from users WHERE id = ?";
 const CREATE_USER_PROFILE = "INSERT INTO users (user_name, email) VALUES (?,?)";
-const DELETE_USER_PROFILE = "DELETE from users WHERE id = ?";
-const PATCH_USER_PROFILE = "UPDATE users SET ";
 const CHECK_EMAIL = "SELECT * FROM users WHERE email = ?";
 
 module.exports = {
